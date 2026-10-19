@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#176b45">
+<title>AKLATAYA | Digital Library</title>
+
+<style>
+:root{
+  --green:#176b45;
+  --green-dark:#104b32;
+  --green-light:#e8f5ed;
+  --green-mid:#cce7d5;
+  --white:#ffffff;
+  --bg:#f5faf6;
+  --text:#20372a;
+  --muted:#65776b;
+  --border:#dce9df;
+  --shadow:0 8px 25px rgba(16,75,50,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;line-height:1.6
+}
+button,input,select,textarea{font:inherit}
+button,a{touch-action:manipulation}
+button{cursor:pointer}
+a{color:var(--green)}
+:focus-visible{outline:3px solid #e0a74e;outline-offset:3px}
+.topbar{background:var(--green-dark);color:white;font-size:12px;padding:7px 5%}
+.topbar-inner{max-width:1250px;margin:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header{background:white;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+.header-inner{
+  max-width:1250px;margin:auto;padding:13px 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--green)}
+.logo{
+  width:50px;height:50px;border-radius:14px;background:var(--green);
+  color:white;display:grid;place-items:center;position:relative;
+  box-shadow:0 4px 12px #176b4525
+}
+.logo svg{width:33px;height:33px}
+.brand-name{font-size:23px;font-weight:900;letter-spacing:1.3px;line-height:1.2}
+.brand-tag{font-size:10px;letter-spacing:1.2px;color:var(--muted)}
+nav{display:flex;align-items:center;gap:3px}
+.nav-item{position:relative}
+.nav-main{
+  background:transparent;border:0;border-radius:8px;padding:11px 12px;
+  font-size:13px;font-weight:700;color:var(--text)
+}
+.nav-main:hover,.nav-main[aria-expanded="true"]{background:var(--green-light);color:var(--green)}
+.chevron{font-size:10px;margin-left:4px}
+.dropdown{
+  display:none;position:absolute;top:100%;left:0;width:240px;
+  background:white;border:1px solid var(--border);border-radius:12px;
+  padding:8px;box-shadow:var(--shadow);z-index:110
+}
+.nav-item.open .dropdown{display:block}
+.dropdown button{
+  width:100%;text-align:left;border:0;background:white;padding:10px;
+  border-radius:7px;color:var(--text);font-size:13px
+}
+.dropdown button:hover{background:var(--green-light);color:var(--green)}
+.menu-toggle{display:none}
+.container{max-width:1250px;margin:auto;padding:27px 24px 65px}
+.page{display:none;animation:appear .18s ease}
+.page.active{display:block}
+@keyframes appear{from{opacity:.55;transform:translateY(3px)}to{opacity:1;transform:none}}
+.hero{
+  background:linear-gradient(120deg,#104b32 0%,#176b45 65%,#2c8a5d 100%);
+  border-radius:22px;color:white;overflow:hidden;position:relative;
+  padding:55px 50px;min-height:365px;display:flex;align-items:center
+}
+.hero:before{
+  content:"";position:absolute;width:340px;height:340px;border:1px solid #ffffff30;
+  border-radius:50%;right:-80px;top:-70px;
+  box-shadow:0 0 0 35px #ffffff0b,0 0 0 75px #ffffff08,0 0 0 115px #ffffff05
+}
+.hero:after{
+  content:"❧";position:absolute;right:8%;bottom:-85px;
+  font-size:260px;color:#ffffff0c;transform:rotate(-25deg)
+}
+.hero-content{max-width:720px;position:relative;z-index:1}
+.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800;color:#aee0be}
+.hero h1{font-size:clamp(36px,5vw,57px);line-height:1.1;margin:14px 0}
+.hero p{max-width:600px;color:#e4f4e9;font-size:16px}
+.searchbar{
+  display:flex;gap:6px;background:white;border-radius:12px;padding:6px;
+  margin-top:23px;max-width:690px;box-shadow:0 8px 25px #0002
+}
+.searchbar input{border:0;outline:none;min-width:0;flex:1;padding:13px;color:var(--text)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  border:1px solid transparent;background:var(--green);color:white;
+  border-radius:8px;padding:11px 16px;font-size:13px;font-weight:800;text-decoration:none
+}
+.btn:hover{background:var(--green-dark)}
+.btn.white{background:white;color:var(--green);border-color:var(--border)}
+.btn.white:hover{background:var(--green-light)}
+.btn.outline{background:transparent;color:var(--green);border-color:var(--green-mid)}
+.btn.small{padding:8px 11px;font-size:12px}
+.hero .btn{background:white;color:var(--green)}
+.hero-note{font-size:11px;color:#d8eddf;margin-top:10px}
+.section{margin-top:40px}
+.section-heading{display:flex;justify-content:space-between;align-items:end;gap:14px;margin-bottom:17px}
+.section-heading h2{margin:0;font-size:25px;line-height:1.3;color:var(--green-dark)}
+.section-heading p{font-size:13px;color:var(--muted);margin:5px 0 0}
+.text-link{border:0;background:transparent;color:var(--green);font-weight:800;font-size:13px}
+.grid{display:grid;gap:17px}
+.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.collection-card{
+  background:white;border:1px solid var(--border);border-radius:15px;
+  padding:20px;cursor:pointer;transition:transform .2s,box-shadow .2s;
+  display:flex;flex-direction:column;min-width:0
+}
+.collection-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:#9ac9a9}
+.collection-icon{
+  width:49px;height:49px;border-radius:13px;background:var(--green-light);
+  color:var(--green);display:grid;place-items:center;font-size:24px;margin-bottom:13px
+}
+.collection-card h3{font-size:16px;margin:0 0 6px;color:var(--green-dark)}
+.collection-card p{font-size:12px;color:var(--muted);margin:0 0 15px;flex:1}
+.card-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pill{background:var(--green-light);color:var(--green);padding:4px 9px;border-radius:30px;font-size:10px;font-weight:800}
+.arrow{color:var(--green);font-size:18px}
+.welcome-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:18px}
+.panel{background:white;border:1px solid var(--border);border-radius:15px;padding:24px;min-width:0}
+.panel h3{margin:0 0 9px;color:var(--green-dark)}
+.panel p{font-size:13px;color:var(--muted)}
+.quick-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.stat{padding:13px;background:var(--bg);border-radius:10px}
+.stat strong{display:block;font-size:22px;color:var(--green)}
+.stat span{font-size:10px;color:var(--muted)}
+.notice{padding:15px 17px;background:var(--green-light);border-left:4px solid var(--green);border-radius:8px;font-size:13px}
+.page-title{margin:5px 0 25px}
+.page-title .eyebrow{color:var(--green)}
+.page-title h1{margin:6px 0;font-size:34px;line-height:1.2;color:var(--green-dark)}
+.page-title p{margin:8px 0;color:var(--muted);font-size:14px;max-width:800px}
+.breadcrumb{font-size:12px;color:var(--muted);margin-bottom:16px}
+.breadcrumb button{border:0;background:none;color:var(--green);padding:0;font-weight:800}
+.filters{
+  display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:11px;
+  padding:17px;background:white;border:1px solid var(--border);border-radius:14px
+}
+.field label{display:block;font-size:11px;font-weight:800;color:var(--green-dark);margin-bottom:5px}
+.field input,.field select,.field textarea{
+  width:100%;min-width:0;padding:11px;border:1px solid #d3e2d7;
+  border-radius:8px;background:white;color:var(--text)
+}
+.field textarea{min-height:115px;resize:vertical}
+.advanced{display:none;margin-top:12px;padding:16px;background:#f0f8f2;border-radius:10px}
+.advanced.open{display:block}
+.advanced-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.search-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:16px 0}
+.result-count{font-size:13px;color:var(--muted)}
+.resource-card{
+  background:white;border:1px solid var(--border);border-radius:14px;
+  padding:18px;display:flex;gap:14px;align-items:flex-start;min-width:0
+}
+.resource-icon{
+  flex:0 0 46px;height:48px;border-radius:11px;background:var(--green-light);
+  display:grid;place-items:center;font-size:23px
+}
+.resource-body{flex:1;min-width:0}
+.resource-card h3{font-size:15px;margin:0 0 5px;line-height:1.4;color:var(--green-dark)}
+.resource-card p{font-size:12px;color:var(--muted);margin:5px 0;overflow-wrap:anywhere}
+.resource-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.detail-layout{display:grid;grid-template-columns:1.6fr 1fr;gap:19px}
+.detail-main,.detail-side{background:white;border:1px solid var(--border);border-radius:15px;padding:23px;min-width:0}
+.detail-main h1{font-size:28px;line-height:1.25;color:var(--green-dark);margin:11px 0}
+.detail-main p{font-size:14px}
+.metadata{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px;overflow-wrap:anywhere}
+.metadata th,.metadata td{padding:11px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+.metadata th{width:34%;color:var(--muted)}
+.metadata td a{overflow-wrap:anywhere}
+.detail-side h3{margin-top:0;color:var(--green-dark)}
+.detail-side .btn{width:100%;margin:5px 0}
+.muted{font-size:12px;color:var(--muted)}
+.service-card{background:white;border:1px solid var(--border);border-radius:14px;padding:22px}
+.service-card h3{margin:0 0 7px;color:var(--green-dark)}
+.service-card p{font-size:13px;color:var(--muted)}
+.service-card .btn{margin-top:8px}
+.form-panel{max-width:800px;background:white;border:1px solid var(--border);border-radius:15px;padding:25px}
+.form-panel .field{margin-bottom:16px}
+.form-panel textarea{min-height:120px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+footer {
+  background: var(--green-dark);
+  color: white;
+  padding: 18px 24px 10px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+footer p {
+  font-size: 12px;
+  color: #d1e5d8;
+  margin: 3px 0;
+  line-height: 1.45;
+}
+
+footer strong {
+  display: inline-block;
+  margin-bottom: 3px;
+  font-size: 13px;
+}
+
+footer button {
+  background: none;
+  border: 0;
+  color: #d1e5d8;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+
+@media (max-width: 680px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  footer {
+    padding: 18px 16px 10px;
+  }
+}
+
+@media(max-width:680px){
+ .topbar-inner{justify-content:center;text-align:center}
+ .header-inner{padding:12px 16px;flex-wrap:wrap}
+ .menu-toggle{display:inline-flex}
+ nav{display:none;flex-direction:column;align-items:stretch;width:100%;gap:2px}
+ nav.mobile-open{display:flex}
+ .nav-item{width:100%}
+ .nav-main{width:100%;text-align:left;padding:12px;font-size:14px}
+ .dropdown{position:static;width:100%;box-shadow:none;border-radius:8px;margin:3px 0}
+ .container{padding:20px 15px 45px}
+ .hero{padding:33px 22px;min-height:unset}
+ .hero h1{font-size:37px}
+ .hero:before{right:-220px}
+ .searchbar{flex-wrap:wrap}
+ .searchbar input{flex-basis:100%;padding:11px}
+ .searchbar button{width:100%}
+ .grid-4,.grid-3,.grid-2{grid-template-columns:1fr}
+ .section-heading{align-items:flex-start}
+ .section-heading h2{font-size:22px}
+ .filters,.advanced-grid,.two-col{grid-template-columns:1fr}
+ .page-title h1{font-size:29px}
+ .detail-main,.detail-side,.form-panel{padding:17px}
+ .detail-main h1{font-size:24px}
+ .resource-card{padding:14px;gap:10px}
+ .resource-icon{flex-basis:38px;height:40px;font-size:20px}
+ .stats{grid-template-columns:1fr}
+ .brand-name{font-size:20px}
+}
+@media(prefers-reduced-motion:reduce){
+ ,::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
+</style>
+</head>
+
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <span>🌿 Discover knowledge. Preserve heritage.</span>
+    <span>PORIOL GROUP LIBRARY PROTOTYPE</span>
+  </div>
+</div>
+
+<header>
+ <div class="header-inner">
+  <a href="#home" class="brand" aria-label="AKLATAYA homepage" onclick="navigate('home');return false">
+   <div class="logo" aria-hidden="true">
+    <svg viewBox="0 0 40 40" fill="none">
+     <path d="M4 9 Q12 5 19 11 V33 Q12 27 4 30 Z" stroke="white" stroke-width="2.4" stroke-linejoin="round"/>
+     <path d="M36 9 Q28 5 21 11 V33 Q28 27 36 30 Z" stroke="white" stroke-width="2.4" stroke-linejoin="round"/>
+     <path d="M8 15 Q13 14 16 17 M8 21 Q13 20 16 23 M24 17 Q28 14 32 15 M24 23 Q28 20 32 21" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+     <path d="M20 7 V35" stroke="#bce7ca" stroke-width="1.5"/>
+    </svg>
+   </div>
+   <div>
+    <div class="brand-name">AKLATAYA</div>
+    <div class="brand-tag">DIGITAL LIBRARY & HERITAGE</div>
+   </div>
+  </a>
+
+  
+
+  <nav id="mainNav" aria-label="Main navigation">
+   <div class="nav-item">
+    <button class="nav-main" onclick="toggleDropdown(this,'homeMenu')" aria-expanded="false">Home <span class="chevron">▾</span></button>
+    <div class="dropdown" id="homeMenu">
+     <button onclick="navigate('home');closeMenus()">Homepage</button>
+     <button onclick="navigate('home');closeMenus();setTimeout(()=>document.getElementById('welcomeSection').scrollIntoView(),50)">Welcome & Mission</button>
+     <button onclick="navigate('home');closeMenus();setTimeout(()=>document.getElementById('featuredSection').scrollIntoView(),50)">Featured Resources</button>
+    </div>
+   </div>
+   <div class="nav-item">
+    <button class="nav-main" onclick="toggleDropdown(this,'collectionsMenu')" aria-expanded="false">Collections <span class="chevron">▾</span></button>
+    <div class="dropdown" id="collectionsMenu">
+     <button onclick="navigate('collections');closeMenus()">All Collections</button>
+     <button onclick="browseCollection('ebooks');closeMenus()">E-books</button>
+     <button onclick="browseCollection('ejournals');closeMenus()">E-journals</button>
+     <button onclick="browseCollection('theses');closeMenus()">Theses & Dissertations</button>
+     <button onclick="browseCollection('images');closeMenus()">Images</button>
+     <button onclick="browseCollection('audio');closeMenus()">Audio</button>
+     <button onclick="browseCollection('videos');closeMenus()">Videos</button>
+     <button onclick="browseCollection('history');closeMenus()">Historical Documents</button>
+     <button onclick="browseCollection('publications');closeMenus()">Institutional Publications</button>
+    </div>
+   </div>
+   <div class="nav-item">
+    <button class="nav-main" onclick="toggleDropdown(this,'searchMenu')" aria-expanded="false">Search Library <span class="chevron">▾</span></button>
+    <div class="dropdown" id="searchMenu">
+     <button onclick="navigate('search');closeMenus()">Search All Resources</button>
+     <button onclick="navigate('search');closeMenus();setTimeout(()=>document.getElementById('advancedOptions').classList.add('open'),50)">Advanced Search</button>
+     <button onclick="browseBy('subject');closeMenus()">Browse by Subject</button>
+     <button onclick="browseBy('creator');closeMenus()">Browse by Author</button>
+     <button onclick="browseBy('title');closeMenus()">Browse by Title</button>
+     <button onclick="navigate('collections');closeMenus()">Browse by Collection</button>
+    </div>
+   </div>
+   <div class="nav-item">
+    <button class="nav-main" onclick="toggleDropdown(this,'servicesMenu')" aria-expanded="false">Library Services <span class="chevron">▾</span></button>
+    <div class="dropdown" id="servicesMenu">
+     <button onclick="navigate('services');closeMenus()">All Services</button>
+     <button onclick="navigate('services');closeMenus();setTimeout(()=>document.getElementById('citationService').scrollIntoView(),50)">Citation Generator</button>
+     <button onclick="navigate('ask');closeMenus()">Ask-a-Librarian</button>
+     <button onclick="navigate('services');closeMenus();setTimeout(()=>document.getElementById('accessibilityService').scrollIntoView(),50)">Accessibility Features</button>
+    </div>
+   </div>
+   <div class="nav-item">
+    <button class="nav-main" onclick="toggleDropdown(this,'aboutMenu')" aria-expanded="false">About <span class="chevron">▾</span></button>
+    <div class="dropdown" id="aboutMenu">
+     <button onclick="navigate('about');closeMenus()">About AKLATAYA</button>
+     <button onclick="navigate('about');closeMenus();setTimeout(()=>document.getElementById('technologySection').scrollIntoView(),50)">Technology Features</button>
+     <button onclick="navigate('about');closeMenus();setTimeout(()=>document.getElementById('copyrightSection').scrollIntoView(),50)">Legal Rights & Copyright</button>
+    </div>
+   </div>
+  </nav>
+ </div>
+</header>
+
+<main class="container">
+<!-- HOME -->
+<section class="page active" id="page-home">
+ <div class="hero">
+  <div class="hero-content">
+   <div class="eyebrow">A home for knowledge and discovery</div>
+   <h1>Every page has a story.<br>Every story deserves to be found.</h1>
+   <p>Explore books, research, cultural treasures, and digital learning materials in one welcoming library experience.</p>
+   <form class="searchbar" onsubmit="homeSearch(event)">
+    <input id="homeQuery" type="search" placeholder="Search titles, authors, subjects, and more..." aria-label="Search library">
+    <button class="btn" type="submit">⌕ Search Library</button>
+   </form>
+   <div class="hero-note">Start with a keyword, or browse a collection below.</div>
+  </div>
+ </div>
+
+ <div class="section" id="homeCollectionsSection">
+  <div class="section-heading">
+   <div><h2>Explore Digital Collections</h2><p>We'll bringing you to the right repository based on your needs.</p></div>
+   <button class="text-link" onclick="navigate('collections')">View all collections →</button>
+  </div>
+  <div class="grid grid-4" id="homeCollections"></div>
+ </div>
+
+ <div class="section welcome-grid" id="welcomeSection">
+  <div class="panel">
+   <div class="eyebrow" style="color:var(--green)">Welcome to AKLATAYA</div>
+   <h3 style="font-size:23px">Knowledge grows when it is shared.</h3>
+   <p>AKLATAYA is a digital library prototype designed to help learners discover information, explore research, and connect with Filipino heritage.</p>
+   <p>Our goal is to make resource discovery clearer and more accessible while promoting responsible use of information and respect for creators.</p>
+   <div class="quick-links">
+    <button class="btn" onclick="navigate('collections')">Explore collections</button>
+    <button class="btn white" onclick="navigate('about')">Learn about us</button>
+   </div>
+  </div>
+  <div class="panel">
+   <h3>Find your next resource</h3>
+   <p>Choose how you want to explore the catalog.</p>
+   <div class="quick-links">
+    <button class="btn white" onclick="browseBy('subject')">By subject</button>
+    <button class="btn white" onclick="browseBy('creator')">By author</button>
+    <button class="btn white" onclick="browseBy('title')">By title</button>
+    <button class="btn white" onclick="navigate('search')">Advanced search</button>
+   </div>
+   <div class="stats">
+    <div class="stat"><strong>8</strong><span>Digital collections</span></div>
+    <div class="stat"><strong>32</strong><span>Sample records</span></div>
+    <div class="stat"><strong>24/7</strong><span>Prototype access</span></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="section" id="featuredSection">
+  <div class="section-heading">
+   <div><h2>Featured Resources</h2><p>Discover sample records and open their source pages.</p></div>
+   <button class="text-link" onclick="navigate('search')">Browse catalog →</button>
+  </div>
+  <div class="grid grid-2" id="featuredResources"></div>
+ </div>
+
+ <div class="section notice">
+  <strong>About the records:</strong> These are sample catalog entries linked to external repositories or collection portals. AKLATAYA demonstrates resource discovery and metadata; it does not claim to host the original files.
+ </div>
+</section>
+
+<!-- COLLECTIONS -->
+<section class="page" id="page-collections">
+ <div class="page-title">
+  <div class="eyebrow">Explore by format</div>
+  <h1>Digital Collections</h1>
+  <p>Select a collection to browse its four sample records. Use the resource details page to review metadata and open the original source.</p>
+ </div>
+ <div class="grid grid-4" id="allCollections"></div>
+</section>
+
+<!-- SEARCH -->
+<section class="page" id="page-search">
+ <div class="page-title">
+  <div class="eyebrow">Discover information</div>
+  <h1>Search Library</h1>
+  <p>Find resources by title, author or creator, subject, or collection. Open Advanced Search to narrow your results.</p>
+ </div>
+
+ <form class="filters" onsubmit="runSearch(event)">
+  <div class="field">
+   <label for="searchQuery">Search keywords</label>
+   <input id="searchQuery" type="search" placeholder="Enter a title, author, or topic...">
+  </div>
+  <div class="field">
+   <label for="searchField">Browse / search by</label>
+   <select id="searchField">
+    <option value="all">All fields</option>
+    <option value="title">Title</option>
+    <option value="creator">Author / Creator</option>
+    <option value="subject">Subject</option>
+    <option value="collection">Collection</option>
+   </select>
+  </div>
+  <div class="field">
+   <label for="searchCollection">Collection</label>
+   <select id="searchCollection"><option value="all">All collections</option></select>
+  </div>
+  <div style="display:flex;align-items:end">
+   <button class="btn" type="submit" style="width:100%">Search</button>
+  </div>
+ </form>
+
+ <div style="margin-top:10px">
+  <button class="btn outline small" type="button" onclick="toggleAdvanced()">⚙ Advanced Search <span id="advancedArrow">＋</span></button>
+  <button class="btn outline small" type="button" onclick="browseBy('subject')">Browse Subjects</button>
+  <button class="btn outline small" type="button" onclick="browseBy('creator')">Browse Authors</button>
+  <button class="btn outline small" type="button" onclick="browseBy('title')">Browse Titles</button>
+ </div>
+
+ <div class="advanced" id="advancedOptions">
+  <div class="advanced-grid">
+   <div class="field"><label for="advTitle">Title contains</label><input id="advTitle" placeholder="e.g. Philippine history"></div>
+   <div class="field"><label for="advCreator">Author / Creator</label><input id="advCreator" placeholder="e.g. Library of Congress"></div>
+   <div class="field"><label for="advSubject">Subject / Topic</label><input id="advSubject" placeholder="e.g. culture, research"></div>
+  </div>
+  <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+   <button class="btn" type="button" onclick="runAdvancedSearch()">Apply advanced search</button>
+   <button class="btn white" type="button" onclick="clearAdvanced()">Clear advanced fields</button>
+  </div>
+ </div>
+
+ <div class="search-toolbar">
+  <div class="result-count" id="resultCount" aria-live="polite">Browse the sample catalog below.</div>
+  <button class="btn white small" onclick="resetSearch()" type="button">Reset all filters</button>
+ </div>
+ <div class="grid grid-2" id="searchResults"></div>
+ <div class="notice section">The search tool searches the records included in this prototype. It does not automatically search every external database or library website.</div>
+</section>
+
+<!-- RESOURCE DETAILS -->
+<section class="page" id="page-resource">
+ <div class="breadcrumb"><button onclick="navigate('home')">Home</button> / <button onclick="navigate('search')">Search Library</button> / Resource Details</div>
+ <div id="resourceDetails"></div>
+</section>
+
+<!-- SERVICES -->
+<section class="page" id="page-services">
+ <div class="page-title">
+  <div class="eyebrow">Support for your learning</div>
+  <h1>Library Services</h1>
+  <p>Explore tools that support research, resource access, citation, and accessible browsing.</p>
+ </div>
+ <div class="grid grid-3">
+  <article class="service-card">
+   <div class="collection-icon">📖</div><h3>View Resource</h3>
+   <p>Open a catalog entry, read its metadata, and visit the original resource page.</p>
+   <button class="btn" onclick="navigate('search')">Find a resource</button>
+  </article>
+  <article class="service-card" id="citationService">
+   <div class="collection-icon">✍️</div><h3>Citation Generator</h3>
+   <p>Generate a basic APA-style citation from a selected record.</p>
+   <button class="btn" onclick="navigate('search')">Choose a record</button>
+  </article>
+  <article class="service-card">
+   <div class="collection-icon">💬</div><h3>Ask-a-Librarian</h3>
+   <p>Prepare an inquiry about research, searching, or responsible resource use.</p>
+   <button class="btn" onclick="navigate('ask')">Ask a question</button>
+  </article>
+  <article class="service-card" id="accessibilityService">
+   <div class="collection-icon">♿</div><h3>Accessibility Features</h3>
+   <p>Adjust text size or use a high-contrast color setting.</p>
+   <div class="quick-links">
+    <button class="btn white small" onclick="setTextSize(true)">A+ Larger</button>
+    <button class="btn white small" onclick="setTextSize(false)">A− Normal</button>
+    <button class="btn white small" onclick="toggleContrast()">Contrast</button>
+   </div>
+  </article>
+  <article class="service-card">
+   <div class="collection-icon">🔎</div><h3>Research Discovery</h3>
+   <p>Browse the sample catalog by title, creator, subject, or collection.</p>
+   <button class="btn" onclick="navigate('search')">Search the catalog</button>
+  </article>
+  <article class="service-card">
+   <div class="collection-icon">⚖️</div><h3>Copyright Guidance</h3>
+   <p>Review rights information and check the terms of the original source.</p>
+   <button class="btn" onclick="navigate('about');setTimeout(()=>document.getElementById('copyrightSection').scrollIntoView(),50)">Learn about rights</button>
+  </article>
+ </div>
+ <div class="section notice"><strong>Prototype limitation:</strong> Inquiry forms do not automatically contact a librarian or store submissions. The form prepares text for the user to copy into their preferred email application.</div>
+</section>
+
+<!-- ASK -->
+<section class="page" id="page-ask">
+ <div class="page-title">
+  <div class="eyebrow">Research support</div>
+  <h1>Ask-a-Librarian</h1>
+  <p>Prepare a message about a research question or difficulty accessing a resource.</p>
+ </div>
+ <form class="form-panel" onsubmit="prepareInquiry(event)">
+  <div class="two-col">
+   <div class="field"><label for="askName">Name</label><input id="askName" required placeholder="Your name"></div>
+   <div class="field"><label for="askEmail">Email (optional)</label><input id="askEmail" type="email" placeholder="you@example.com"></div>
+  </div>
+  <div class="field"><label for="askTopic">Inquiry topic</label>
+   <select id="askTopic">
+    <option>Finding research materials</option><option>Using digital collections</option>
+    <option>Citation and referencing</option><option>Copyright and permissions</option>
+    <option>Accessibility support</option><option>Other inquiry</option>
+   </select>
+  </div>
+  <div class="field"><label for="askMessage">Your question</label><textarea id="askMessage" required placeholder="Describe what you need help with..."></textarea></div>
+  <button class="btn" type="submit">Prepare inquiry</button>
+  <div id="inquiryOutput" style="margin-top:17px" aria-live="polite"></div>
+ </form>
+</section>
+
+<!-- ABOUT / TECHNOLOGY / COPYRIGHT -->
+<section class="page" id="page-about">
+ <div class="page-title">
+  <div class="eyebrow">About the project</div>
+  <h1>About AKLATAYA</h1>
+  <p>A student-designed digital library prototype that brings resource discovery, metadata, research support, and cultural heritage into one green-and-white interface.</p>
+ </div>
+
+ <div class="grid grid-2">
+  <article class="panel"><h3>Our mission</h3><p>To make learning resources and cultural information easier to discover, understand, and access through an organized and user-friendly digital library experience.</p></article>
+  <article class="panel"><h3>Our vision</h3><p>A learning community where information is easier to find, knowledge is responsibly shared, and digital heritage is respected and preserved.</p></article>
+  <article class="panel"><h3>Intended users</h3><p>Students, teachers, librarians, researchers, and lifelong learners looking for educational materials and cultural information.</p></article>
+  <article class="panel"><h3>Repository type</h3><p>A centralized digital library discovery portal prototype. A production version could connect to a repository platform such as Omeka S or DSpace, with storage and administrative controls.</p></article>
+ </div>
+
+ <div class="section" id="technologySection">
+  <div class="section-heading"><div><h2>Technology Features</h2><p>How the proposed digital library could operate.</p></div></div>
+  <div class="grid grid-3">
+   <article class="panel"><h3>Interface</h3><p>HTML for structure, CSS for visual design, and JavaScript for navigation, filtering, search, and interactive controls.</p></article>
+   <article class="panel"><h3>Metadata</h3><p>Dublin Core-inspired fields: title, creator, subject, description, publisher, date, format, language, identifier, and rights.</p></article>
+   <article class="panel"><h3>File formats</h3><p>PDF, EPUB, HTML, TXT, JPG, PNG, TIFF, MP3, WAV, MP4, and other supported preservation or access formats.</p></article>
+  </div>
+  <div class="notice" style="margin-top:15px"><strong>Implementation note:</strong> This standalone HTML prototype does not provide server-side storage, user accounts, database management, or file uploads. Those features require a repository backend and authorized content.</div>
+ </div>
+
+ <div class="section" id="copyrightSection">
+  <div class="section-heading"><div><h2>Legal Rights & Copyright</h2><p>Access information responsibly and respect intellectual property.</p></div></div>
+  <div class="panel">
+   <h3>Copyright principles</h3>
+   <ul>
+    <li><strong>Respect ownership:</strong> Materials may belong to authors, publishers, photographers, institutions, or other rights holders.</li>
+    <li><strong>Check licenses:</strong> Confirm whether an item is public domain, openly licensed, restricted, or available only under specific terms.</li>
+    <li><strong>Attribute sources:</strong> Cite the creator and source when required. Attribution does not by itself grant permission to reuse copyrighted material.</li>
+    <li><strong>Use authorized copies:</strong> Do not upload, redistribute, or modify protected files without permission or another valid legal basis.</li>
+    <li><strong>Protect privacy:</strong> Review privacy, consent, and ethical considerations before making personal or sensitive archival materials accessible.</li>
+    <li><strong>Verify rights metadata:</strong> A real repository should document rights statements and access restrictions for each item.</li>
+   </ul>
+   <p class="muted">This prototype links to external institutions and does not claim ownership of their content. Users should verify each item's rights and access conditions at the source.</p>
+  </div>
+ </div>
+</section>
+</main>
+
+
+<
+
+<!-- END OF MAIN CONTENT -->
+</main>
+
+<!-- VISITOR COUNTER, CONTACT US, AND VISIT US -->
+<!-- Paste the new site-info-section HTML here -->
+
+<footer class="site-footer">
+  <div class="footer-inner">
+
+    <div class="footer-brand">
+      <div class="footer-logo">AKLATAYA</div>
+      <p>Every page has a story. Every story deserves to be found.</p>
+      <p>Digital Library Prototype</p>
+    </div>
+
+    <div class="footer-team">
+      <strong>Created and Developed by</strong>
+      <p>Alexander Poriol</p>
+      <strong>Project Members</strong>
+      <p>Leah Mae Dela Peña · Owen Senados · Kevin Suan</p>
+    </div>
+
+    <div class="footer-notice">
+      <strong>Project Notice</strong>
+      <p>Educational prototype; not an official institutional website.</p>
+      <p>External resources remain the property of their respective owners.</p>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>Copyright &copy; 2026 AKLATAYA. All rights reserved.</p>
+    <p>Designed and developed for educational purposes.</p>
+  </div>
+</footer>
+
+
+ </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const collections=[
+ {id:"ebooks",name:"E-books",icon:"📚",description:"Electronic books, reading materials, and digital texts."},
+ {id:"ejournals",name:"E-journals",icon:"📑",description:"Scholarly journals, articles, and open research."},
+ {id:"theses",name:"Theses & Dissertations",icon:"🎓",description:"Academic research, graduate studies, and dissertations."},
+ {id:"images",name:"Images",icon:"🖼️",description:"Photographs, artworks, maps, and visual records."},
+ {id:"audio",name:"Audio",icon:"🎧",description:"Sound recordings, oral histories, and audio archives."},
+ {id:"videos",name:"Videos",icon:"🎬",description:"Films, educational videos, and moving-image collections."},
+ {id:"history",name:"Historical Documents",icon:"📜",description:"Archives, manuscripts, letters, and historical records."},
+ {id:"publications",name:"Institutional Publications",icon:"🏛️",description:"Reports, institutional publications, and official documents."}
+];
+
+
+const resources = [
+  // E-BOOKS
+  {
+    id: "e1", collection: "ebooks",
+    title: "Alice's Adventures in Wonderland — Lewis Carroll",
+    creator: "Lewis Carroll",
+    subject: "Literature; fantasy; children's fiction",
+    description: "Read this classic novel online or choose an available e-book download format.",
+    publisher: "Project Gutenberg",
+    date: "2008; updated 2025",
+    format: "HTML, EPUB, and other formats",
+    language: "English",
+    url: "https://www.gutenberg.org/ebooks/11",
+    rights: "Public domain in the United States; check applicable local laws."
+  },
+  {
+    id: "e2", collection: "ebooks",
+    title: "Pride and Prejudice — Jane Austen",
+    creator: "Jane Austen",
+    subject: "Literature; romance; classic fiction",
+    description: "An individual e-book record with online reading and download options.",
+    publisher: "Project Gutenberg",
+    date: "Varies by edition",
+    format: "HTML, EPUB, and other formats",
+    language: "English",
+    url: "https://www.gutenberg.org/ebooks/1342",
+    rights: "Check the source's rights notice and applicable local laws."
+  },
+  {
+    id: "e3", collection: "ebooks",
+    title: "Frankenstein — Mary Shelley",
+    creator: "Mary Shelley",
+    subject: "Literature; science fiction; Gothic fiction",
+    description: "An individual record for Mary Shelley's classic novel.",
+    publisher: "Project Gutenberg",
+    date: "Varies by edition",
+    format: "HTML, EPUB, and other formats",
+    language: "English",
+    url: "https://www.gutenberg.org/ebooks/84",
+    rights: "Check the source's rights notice and applicable local laws."
+  },
+  {
+    id: "e4", collection: "ebooks",
+    title: "The Adventures of Sherlock Holmes — Arthur Conan Doyle",
+    creator: "Arthur Conan Doyle",
+    subject: "Literature; detective fiction; mystery",
+    description: "An individual e-book record for a classic collection of detective stories.",
+    publisher: "Project Gutenberg",
+    date: "Varies by edition",
+    format: "HTML, EPUB, and other formats",
+    language: "English",
+    url: "https://www.gutenberg.org/ebooks/1661",
+    rights: "Check the source's rights notice and applicable local laws."
+  },
+
+  // E-JOURNALS
+  {
+    id: "j1", collection: "ejournals",
+    title: "Why Most Published Research Findings Are False",
+    creator: "John P. A. Ioannidis",
+    subject: "Research methods; scientific publishing; reproducibility",
+    description: "A specific scholarly article discussing reliability in published research.",
+    publisher: "PLOS Medicine",
+    date: "2005",
+    format: "Online journal article",
+    language: "English",
+    url: "https://doi.org/10.1371/journal.pmed.0020124",
+    rights: "Review the article's license and reuse terms."
+  },
+  {
+    id: "j2", collection: "ejournals",
+    title: "How to Make More Published Research True",
+    creator: "John P. A. Ioannidis",
+    subject: "Research quality; scientific methods; scholarly communication",
+    description: "A specific article proposing ways to improve the reliability of published research.",
+    publisher: "PLOS Medicine",
+    date: "2014",
+    format: "Online journal article",
+    language: "English",
+    url: "https://doi.org/10.1371/journal.pmed.1001747",
+    rights: "Review the article's license and reuse terms."
+  },
+  {
+    id: "j3", collection: "ejournals",
+    title: "PubMed Central — Full-Text Article Archive",
+    creator: "U.S. National Library of Medicine",
+    subject: "Biomedical literature; life sciences; health research",
+    description: "A full-text archive. This link opens the collection rather than an individual article.",
+    publisher: "National Center for Biotechnology Information",
+    date: "Varies by article",
+    format: "Online articles",
+    language: "Primarily English",
+    url: "https://pmc.ncbi.nlm.nih.gov/",
+    rights: "Check the license attached to each article."
+  },
+  {
+    id: "j4", collection: "ejournals",
+    title: "Philippine E-Journals — Scholarly Publications",
+    creator: "Participating Philippine journal publishers",
+    subject: "Philippine scholarship; journals; research",
+    description: "A discovery platform for Philippine academic journals. This link opens the platform, not a specific article.",
+    publisher: "Philippine E-Journals",
+    date: "Varies by article",
+    format: "Online journal records and articles",
+    language: "English and Filipino, depending on item",
+    url: "https://ejournals.ph/",
+    rights: "Check the individual article's access policy and copyright notice."
+  },
+
+  // THESES AND DISSERTATIONS
+  {
+    id: "t1", collection: "theses",
+    title: "Open Access Theses and Dissertations",
+    creator: "Participating universities and researchers",
+    subject: "Theses; dissertations; graduate research",
+    description: "A discovery service for open-access theses and dissertations. Search for a specific thesis before presenting it as an individual item.",
+    publisher: "OATD",
+    date: "Varies by thesis",
+    format: "Search records and linked documents",
+    language: "Multiple languages",
+    url: "https://oatd.org/",
+    rights: "Consult the originating repository and document's rights statement."
+  },
+  {
+    id: "t2", collection: "theses",
+    title: "Networked Digital Library of Theses and Dissertations",
+    creator: "Participating institutions",
+    subject: "Theses; dissertations; academic research",
+    description: "A network supporting discovery of electronic theses and dissertations.",
+    publisher: "NDLTD",
+    date: "Varies by thesis",
+    format: "Records and links to documents",
+    language: "Multiple languages",
+    url: "https://ndltd.org/",
+    rights: "Rights and access conditions depend on the originating institution."
+  },
+  {
+    id: "t3", collection: "theses",
+    title: "CORE — Open Research",
+    creator: "CORE and contributing repositories",
+    subject: "Open research; academic papers; scholarly communication",
+    description: "A discovery service for research outputs from repositories and journals.",
+    publisher: "CORE",
+    date: "Varies by record",
+    format: "Metadata and linked full text",
+    language: "Multiple languages",
+    url: "https://core.ac.uk/",
+    rights: "Check the source record's license and access conditions."
+  },
+  {
+    id: "t4", collection: "theses",
+    title: "Philippine eLib — Research and Thesis Discovery",
+    creator: "Philippine eLib partner institutions",
+    subject: "Filipiniana; theses; dissertations; academic research",
+    description: "A Philippine digital library offering catalog and digitized resource discovery.",
+    publisher: "Philippine eLib",
+    date: "Varies by record",
+    format: "Catalog records and digital resources",
+    language: "Varies by item",
+    url: "https://www.elib.gov.ph/asearch.php",
+    rights: "Check the individual record and source institution's terms."
+  },
+
+  // IMAGES
+  {
+    id: "i1", collection: "images",
+    title: "Three Children Standing in Front of a Home, Philippines",
+    creator: "Photographer not identified in this title",
+    subject: "Philippine history; photography; social history",
+    description: "An individual historical photograph record in the Library of Congress catalog.",
+    publisher: "Library of Congress",
+    date: "1906",
+    format: "Photograph and catalog record",
+    language: "Metadata in English",
+    url: "https://www.loc.gov/item/2021640627/",
+    rights: "Check the item's digitization status and rights advisory before reuse."
+  },
+  {
+    id: "i2", collection: "images",
+    title: "Wikimedia Commons — Image File Discovery",
+    creator: "Wikimedia Commons contributors",
+    subject: "Photography; illustrations; open media",
+    description: "Browse image records and check the license for each individual file.",
+    publisher: "Wikimedia Commons",
+    date: "Varies by file",
+    format: "Multiple image formats",
+    language: "Metadata in multiple languages",
+    url: "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image",
+    rights: "Check the license and attribution requirements for each file."
+  },
+  {
+    id: "i3", collection: "images",
+    title: "National Museum of the Philippines — Fine Arts",
+    creator: "National Museum of the Philippines and represented artists",
+    subject: "Philippine art; paintings; cultural heritage",
+    description: "Discover artworks and collection information from the National Museum.",
+    publisher: "National Museum of the Philippines",
+    date: "Varies by artwork",
+    format: "Collection pages and images where available",
+    language: "English",
+    url: "https://www.nationalmuseum.gov.ph/our-collections/fine-arts/",
+    rights: "Check the rights for each artwork and image."
+  },
+  {
+    id: "i4", collection: "images",
+    title: "Europeana — Digital Cultural Heritage",
+    creator: "Europeana and contributing institutions",
+    subject: "Cultural heritage; artworks; photographs",
+    description: "Discover digital cultural heritage records from European institutions.",
+    publisher: "Europeana",
+    date: "Varies by item",
+    format: "Digital images and records",
+    language: "Multiple languages",
+    url: "https://www.europeana.eu/en/search?query=photography",
+    rights: "Check the rights statement displayed on each item."
+  },
+
+  // AUDIO
+  {
+    id: "a1", collection: "audio",
+    title: "Welcome — Arthur Collins (1905)",
+    creator: "Arthur Collins",
+    subject: "Historical sound recording; music; audio heritage",
+    description: "An individual historical audio record in the Library of Congress National Jukebox.",
+    publisher: "Library of Congress",
+    date: "1905",
+    format: "Online audio and catalog record",
+    language: "English",
+    url: "https://www.loc.gov/resource/jukebox-121896.1/",
+    rights: "Check item-level rights and restrictions before reuse."
+  },
+  {
+    id: "a2", collection: "audio",
+    title: "Internet Archive — Audio Collections",
+    creator: "Internet Archive contributors",
+    subject: "Audio recordings; spoken word; music",
+    description: "Browse audio items. Choose a specific recording before treating it as an individual resource.",
+    publisher: "Internet Archive",
+    date: "Varies by item",
+    format: "Audio streams and downloadable files where available",
+    language: "Multiple languages",
+    url: "https://archive.org/details/audio",
+    rights: "Rights and download permissions vary by item."
+  },
+  {
+    id: "a3", collection: "audio",
+    title: "Wikimedia Commons — Audio Files",
+    creator: "Wikimedia Commons contributors",
+    subject: "Audio; spoken word; recordings",
+    description: "Browse audio files and inspect the licensing information on each file page.",
+    publisher: "Wikimedia Commons",
+    date: "Varies by file",
+    format: "Multiple audio formats",
+    language: "Multiple languages",
+    url: "https://commons.wikimedia.org/wiki/Category:Audio_files",
+    rights: "Check the license and attribution instructions for each file."
+  },
+  {
+    id: "a4", collection: "audio",
+    title: "Smithsonian Folkways Recordings",
+    creator: "Smithsonian Folkways and contributing artists",
+    subject: "World music; oral traditions; cultural recordings",
+    description: "Explore recordings documenting musical and sound traditions.",
+    publisher: "Smithsonian Folkways Recordings",
+    date: "Varies by recording",
+    format: "Audio recordings and catalog records",
+    language: "Multiple languages",
+    url: "https://folkways.si.edu/",
+    rights: "Check recording-specific use and reuse terms."
+  },
+
+  // VIDEOS
+  {
+    id: "v1", collection: "videos",
+    title: "NASA Image and Video Library — PIA00123",
+    creator: "NASA",
+    subject: "Space; science; astronomy; educational media",
+    description: "An individual NASA media asset record.",
+    publisher: "National Aeronautics and Space Administration",
+    date: "See the item record",
+    format: "Digital media and metadata",
+    language: "English metadata",
+    url: "https://images.nasa.gov/details/PIA00123",
+    rights: "Review NASA usage guidance and any third-party credit restrictions."
+  },
+  {
+    id: "v2", collection: "videos",
+    title: "NASA Image and Video Library — PIA04230",
+    creator: "NASA",
+    subject: "Space; science; astronomy; educational media",
+    description: "An individual NASA media asset record.",
+    publisher: "National Aeronautics and Space Administration",
+    date: "See the item record",
+    format: "Digital media and metadata",
+    language: "English metadata",
+    url: "https://images.nasa.gov/details/PIA04230",
+    rights: "Review NASA usage guidance and any third-party credit restrictions."
+  },
+  {
+    id: "v3", collection: "videos",
+    title: "TED Talks — Educational Presentations",
+    creator: "TED speakers and contributors",
+    subject: "Education; science; culture; communication",
+    description: "Browse talks and open a specific talk record to access its video and available transcript.",
+    publisher: "TED",
+    date: "Varies by talk",
+    format: "Online video and transcripts where available",
+    language: "Multiple languages and subtitles, depending on talk",
+    url: "https://www.ted.com/talks",
+    rights: "Follow TED's terms for sharing and reuse."
+  },
+  {
+    id: "v4", collection: "videos",
+    title: "Internet Archive — Moving Image Collections",
+    creator: "Internet Archive contributors",
+    subject: "Film; educational video; moving images",
+    description: "Browse moving-image records and select a specific video item.",
+    publisher: "Internet Archive",
+    date: "Varies by item",
+    format: "Online video; multiple formats",
+    language: "Multiple languages",
+    url: "https://archive.org/details/movies",
+    rights: "Verify the individual item's copyright and reuse terms."
+  },
+
+  // HISTORICAL DOCUMENTS
+  {
+    id: "h1", collection: "history",
+    title: "The Constitution of the Republic of the Philippines (1987)",
+    creator: "Republic of the Philippines",
+    subject: "Philippine history; constitutional law; government",
+    description: "Read the text of the 1987 Philippine Constitution on the Official Gazette website.",
+    publisher: "Official Gazette of the Republic of the Philippines",
+    date: "1987",
+    format: "Online document",
+    language: "English",
+    url: "https://officialgazette.gov.ph/constitutions/1987-constitution/",
+    rights: "Check applicable legal notices and reuse requirements."
+  },
+  {
+    id: "h2", collection: "history",
+    title: "National Archives Catalog",
+    creator: "U.S. National Archives and Records Administration",
+    subject: "Government records; photographs; historical documents",
+    description: "Search the catalog for individual archival records and digitized documents.",
+    publisher: "National Archives and Records Administration",
+    date: "Varies by record",
+    format: "Catalog records and digital documents",
+    language: "Varies by record",
+    url: "https://catalog.archives.gov/",
+    rights: "Review record-level restrictions and reuse guidance."
+  },
+  {
+    id: "h3", collection: "history",
+    title: "Digital Public Library of America — Historical Collections",
+    creator: "DPLA and contributing cultural institutions",
+    subject: "History; archives; photographs; primary sources",
+    description: "Discover digitized materials from libraries, archives, and museums.",
+    publisher: "Digital Public Library of America",
+    date: "Varies by item",
+    format: "Digital item records and source links",
+    language: "Varies by item",
+    url: "https://dp.la/search?q=historical%20documents",
+    rights: "Rights and access conditions depend on the source item."
+  },
+  {
+    id: "h4", collection: "history",
+    title: "Library of Congress — Historical Photographs of the Philippines",
+    creator: "Library of Congress and contributing photographers",
+    subject: "Philippine history; photography; primary sources",
+    description: "An individual historic photograph record documenting children in the Philippines.",
+    publisher: "Library of Congress",
+    date: "1906",
+    format: "Photograph and catalog record",
+    language: "English metadata",
+    url: "https://www.loc.gov/item/2021640627/",
+    rights: "Check the item's access and rights information."
+  },
+
+  // INSTITUTIONAL PUBLICATIONS
+  {
+    id: "p1", collection: "publications",
+    title: "UNESCO — Open Educational Resources",
+    creator: "UNESCO",
+    subject: "Education; open learning; educational policy",
+    description: "An official UNESCO resource explaining open educational resources and their use.",
+    publisher: "UNESCO",
+    date: "See source page",
+    format: "Online institutional resource",
+    language: "Multiple languages",
+    url: "https://www.unesco.org/en/open-educational-resources",
+    rights: "Check UNESCO's copyright and reuse terms."
+  },
+  {
+    id: "p2", collection: "publications",
+    title: "UNESCO Digital Library — Electronic Resources",
+    creator: "UNESCO",
+    subject: "Education; culture; science; publications",
+    description: "A library collection page for discovering UNESCO electronic resources.",
+    publisher: "UNESCO",
+    date: "Varies by publication",
+    format: "Digital publications and bibliographic records",
+    language: "Multiple languages",
+    url: "https://unesdoc.unesco.org/library/collection/electronic-resources?locale=en",
+    rights: "Check publication-specific copyright and license terms."
+  },
+  {
+    id: "p3", collection: "publications",
+    title: "World Bank Documents and Reports",
+    creator: "World Bank",
+    subject: "Development; economics; public policy; research",
+    description: "Discover reports and documents published by the World Bank.",
+    publisher: "World Bank",
+    date: "Varies by publication",
+    format: "Online records and downloadable documents",
+    language: "Multiple languages",
+    url: "https://documents.worldbank.org/",
+    rights: "Check the individual publication's copyright and reuse terms."
+  },
+  {
+    id: "p4", collection: "publications",
+    title: "Philippine Statistics Authority — Publications",
+    creator: "Philippine Statistics Authority",
+    subject: "Philippine statistics; census; demographics; official reports",
+    description: "Discover official statistical releases, reports, and data publications.",
+    publisher: "Philippine Statistics Authority",
+    date: "Varies by publication",
+    format: "Web pages, tables, reports, and downloadable files",
+    language: "English and Filipino",
+    url: "https://psa.gov.ph/",
+    rights: "Check the terms and attribution requirements for specific data and publications."
+  }
+];
+
+let currentResource=null;
+let toastTimer=null;
+
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function getCollection(id){return collections.find(c=>c.id===id)}
+function getResource(id){return resources.find(r=>r.id===id)}
+function showToast(message){
+ const t=document.getElementById("toast");
+ t.textContent=message;t.classList.add("show");
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),3200);
+}
+function closeMenus(){
+ document.querySelectorAll(".nav-item").forEach(n=>{
+  n.classList.remove("open");
+  const b=n.querySelector(".nav-main");if(b)b.setAttribute("aria-expanded","false");
+ });
+}
+function toggleDropdown(button,id){
+ const item=button.closest(".nav-item");
+ const wasOpen=item.classList.contains("open");
+ closeMenus();
+ if(!wasOpen){item.classList.add("open");button.setAttribute("aria-expanded","true");}
+}
+document.addEventListener("click",e=>{
+ if(!e.target.closest(".nav-item"))closeMenus();
+});
+function toggleMobileMenu(){document.getElementById("mainNav").classList.toggle("mobile-open")}
+function navigate(name){
+ const target=document.getElementById("page-"+name);
+ if(!target)return;
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ target.classList.add("active");
+ closeMenus();
+ document.getElementById("mainNav").classList.remove("mobile-open");
+ history.replaceState(null,"","#"+name);
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function collectionCard(c){
+ const count=resources.filter(r=>r.collection===c.id).length;
+ return `<article class="collection-card" tabindex="0" role="button" aria-label="Open ${esc(c.name)} collection"
+ onclick="browseCollection('${c.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();browseCollection('${c.id}')}">
+ <div class="collection-icon" aria-hidden="true">${c.icon}</div>
+ <h3>${esc(c.name)}</h3><p>${esc(c.description)}</p>
+ <div class="card-bottom"><span class="pill">${count} sample resources</span><span class="arrow">→</span></div>
+ </article>`;
+}
+function resourceCard(r){
+ const c=getCollection(r.collection);
+ return `<article class="resource-card">
+ <div class="resource-icon" aria-hidden="true">${c?c.icon:"📘"}</div>
+ <div class="resource-body">
+  <h3>${esc(r.title)}</h3>
+  <p><strong>Creator:</strong> ${esc(r.creator)}</p>
+  <p><strong>Subject:</strong> ${esc(r.subject)}</p>
+  <p>${esc(r.description)}</p>
+  <div class="resource-actions">
+   <button class="btn small" onclick="openResource('${r.id}')">View resource details</button>
+   <button class="btn white small" onclick="openOriginal('${r.id}')">Original source ↗</button>
+  </div>
+ </div>
+ </article>`;
+}
+function renderCollections(){
+ document.getElementById("homeCollections").innerHTML=collections.slice(0,4).map(collectionCard).join("");
+ document.getElementById("allCollections").innerHTML=collections.map(collectionCard).join("");
+ document.getElementById("searchCollection").innerHTML='<option value="all">All collections</option>'+
+ collections.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("");
+}
+function renderFeatured(){
+ document.getElementById("featuredResources").innerHTML=resources.slice(0,4).map(resourceCard).join("");
+}
+function homeSearch(event){
+ event.preventDefault();
+ document.getElementById("searchQuery").value=document.getElementById("homeQuery").value;
+ navigate("search");runSearch();
+}
+function toggleAdvanced(){
+ const panel=document.getElementById("advancedOptions");
+ panel.classList.toggle("open");
+ document.getElementById("advancedArrow").textContent=panel.classList.contains("open")?"−":"＋";
+}
+function runSearch(event){
+ if(event)event.preventDefault();
+ const q=document.getElementById("searchQuery").value.trim().toLowerCase();
+ const field=document.getElementById("searchField").value;
+ const collection=document.getElementById("searchCollection").value;
+ const list=resources.filter(r=>{
+  if(collection!=="all"&&r.collection!==collection)return false;
+  let val="";
+  if(field==="collection")val=getCollection(r.collection)?.name||"";
+  else if(field==="all")val=[r.title,r.creator,r.subject,r.description,r.publisher,r.format,getCollection(r.collection)?.name].join(" ");
+  else val=r[field]||"";
+  return !q||val.toLowerCase().includes(q);
+ });
+ displayResults(list);
+}
+function displayResults(list,label=""){
+ document.getElementById("resultCount").textContent=`${list.length} resource${list.length===1?"":"s"} found${label?" — "+label:""} in the sample catalog.`;
+ document.getElementById("searchResults").innerHTML=list.length?list.map(resourceCard).join(""):
+ `<div class="panel" style="grid-column:1/-1"><h3>No matching resources found</h3><p>Try another keyword or clear your filters.</p><button class="btn" onclick="resetSearch()">Show all resources</button></div>`;
+}
+function runAdvancedSearch(){
+ const title=document.getElementById("advTitle").value.trim().toLowerCase();
+ const creator=document.getElementById("advCreator").value.trim().toLowerCase();
+ const subject=document.getElementById("advSubject").value.trim().toLowerCase();
+ const col=document.getElementById("searchCollection").value;
+ const list=resources.filter(r=>
+  (col==="all"||r.collection===col)&&
+  (!title||r.title.toLowerCase().includes(title))&&
+  (!creator||r.creator.toLowerCase().includes(creator))&&
+  (!subject||r.subject.toLowerCase().includes(subject))
+ );
+ document.getElementById("searchQuery").value="";
+ displayResults(list,"advanced search");
+}
+function clearAdvanced(){
+ ["advTitle","advCreator","advSubject"].forEach(id=>document.getElementById(id).value="");
+}
+function resetSearch(){
+ document.getElementById("searchQuery").value="";
+ document.getElementById("searchField").value="all";
+ document.getElementById("searchCollection").value="all";
+ clearAdvanced();runSearch();
+}
+function browseCollection(id){
+ const c=getCollection(id);if(!c)return;
+ navigate("search");
+ document.getElementById("searchQuery").value="";
+ document.getElementById("searchField").value="all";
+ document.getElementById("searchCollection").value=id;
+ displayResults(resources.filter(r=>r.collection===id),c.name);
+}
+function browseBy(field){
+ navigate("search");
+ document.getElementById("searchQuery").value="";
+ document.getElementById("searchCollection").value="all";
+ document.getElementById("searchField").value=field;
+ const list=[...resources].sort((a,b)=>(a[field]||"").localeCompare(b[field]||""));
+ displayResults(list,"sorted by "+(field==="creator"?"author / creator":field));
+}
+function openResource(id){
+ const r=getResource(id);if(!r)return;currentResource=r;
+ const c=getCollection(r.collection);
+ document.getElementById("resourceDetails").innerHTML=`
+ <div class="detail-layout">
+  <article class="detail-main">
+   <div class="collection-icon">${c?c.icon:"📘"}</div>
+   <span class="pill">${esc(c?c.name:"Digital resource")}</span>
+   <h1>${esc(r.title)}</h1>
+   <p class="muted">Creator: ${esc(r.creator)}</p>
+   <h3>About this resource</h3>
+   <p>${esc(r.description)}</p>
+   <h3>Metadata record</h3>
+   <table class="metadata"><tbody>
+    <tr><th scope="row">Title</th><td>${esc(r.title)}</td></tr>
+    <tr><th scope="row">Creator / Author</th><td>${esc(r.creator)}</td></tr>
+    <tr><th scope="row">Subject</th><td>${esc(r.subject)}</td></tr>
+    <tr><th scope="row">Description</th><td>${esc(r.description)}</td></tr>
+    <tr><th scope="row">Publisher</th><td>${esc(r.publisher)}</td></tr>
+    <tr><th scope="row">Date</th><td>${esc(r.date)}</td></tr>
+    <tr><th scope="row">Format</th><td>${esc(r.format)}</td></tr>
+    <tr><th scope="row">Language</th><td>${esc(r.language)}</td></tr>
+    <tr><th scope="row">Identifier</th><td><a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">${esc(r.url)}</a></td></tr>
+    <tr><th scope="row">Rights</th><td>${esc(r.rights)}</td></tr>
+   </tbody></table>
+  </article>
+  <aside class="detail-side">
+   <h3>Access this resource</h3>
+   <p class="muted">Open the original institution's page for the actual material, availability, and access requirements.</p>
+   <button class="btn" onclick="openOriginal('${r.id}')">View original resource ↗</button>
+   <button class="btn white" onclick="copyCitation('${r.id}')">Copy APA citation</button>
+   <button class="btn white" onclick="copySource('${r.id}')">Copy source URL</button>
+   <button class="btn white" onclick="navigate('search')">← Back to search</button>
+   <hr style="border:0;border-top:1px solid var(--border);margin:20px 0">
+   <h3>Copyright reminder</h3>
+   <p class="muted">${esc(r.rights)}</p>
+   <p class="muted">This catalog record does not mean that the original file is stored on AKLATAYA.</p>
+  </aside>
+ </div>`;
+ navigate("resource");
+}
+function openOriginal(id){
+ const r=getResource(id);if(!r)return;
+ window.open(r.url,"_blank","noopener,noreferrer");
+}
+function apaCitation(r){
+ const date=/^(Varies|See source|Continuously)/i.test(r.date)?"n.d.":r.date;
+ return `${r.creator}. (${date}). ${r.title}. ${r.publisher}. ${r.url}`;
+}
+async function copyText(text){
+ try{
+  await navigator.clipboard.writeText(text);showToast("Copied to clipboard.");
+ }catch(e){
+  const ta=document.createElement("textarea");ta.value=text;
+  ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);
+  ta.select();let ok=false;try{ok=document.execCommand("copy")}catch(err){}
+  ta.remove();showToast(ok?"Copied to clipboard.":"Copy unavailable. Please select and copy the text manually.");
+ }
+}
+function copyCitation(id){const r=getResource(id);if(r)copyText(apaCitation(r))}
+function copySource(id){const r=getResource(id);if(r)copyText(r.url)}
+function prepareInquiry(event){
+ event.preventDefault();
+ const name=document.getElementById("askName").value.trim();
+ const email=document.getElementById("askEmail").value.trim();
+ const topic=document.getElementById("askTopic").value;
+ const message=document.getElementById("askMessage").value.trim();
+ const draft=`Subject: AKLATAYA Inquiry — ${topic}\n\nHello Librarian,\n\nMy name is ${name}.\n${email?"My email address is "+email+".\n":""}Topic: ${topic}\n\nMy question:\n${message}\n\nThank you.`;
+ document.getElementById("inquiryOutput").innerHTML=`<div class="notice"><strong>Your inquiry draft is ready.</strong><p>This demo does not send or store your message. Copy it to send through your email application.</p><button class="btn" id="copyInquiry" type="button">Copy inquiry text</button></div>`;
+ document.getElementById("copyInquiry").addEventListener("click",()=>copyText(draft));
+}
+function setTextSize(large){
+ document.body.classList.toggle("large-text",large);
+ showToast(large?"Larger text enabled.":"Normal text size restored.");
+}
+function toggleContrast(){
+ document.body.classList.toggle("high-contrast");
+ showToast(document.body.classList.contains("high-contrast")?"High contrast enabled.":"Standard colors restored.");
+}
+function init(){
+ renderCollections();renderFeatured();runSearch();
+ const allowed=["home","collections","search","resource","services","ask","about"];
+ const page=location.hash.replace("#","");
+ navigate(allowed.includes(page)?page:"home");
+}
+window.addEventListener("hashchange",()=>{
+ const page=location.hash.replace("#","");
+ if(document.getElementById("page-"+page)){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("page-"+page).classList.add("active");
+ }
+});
+init();
+</script>
+</body>
+</html>
+www.gutenberg.org
